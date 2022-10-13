@@ -1,0 +1,229 @@
+<?PHP
+header('Access-Control-Allow-Origin: *');
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #e7e8e6;
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            width: 30%;
+        }
+
+        *,
+        .form-select {
+            color: #483698;
+        }
+
+        .form-select,
+        .form-control {
+            border-color: #363636;
+            background-color: #eae4e6;
+        }
+
+        .yesOrNo {
+            position: relative;
+        }
+
+        .yesOrNo::after {
+            content: attr(data-rep);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #483698;
+
+        }
+
+        .btn:hover {
+            color: #483698;
+            background-color: #FFCD00;
+            border: 1px solid #483698;
+            /*padding: 3px 20px;*/
+        }
+
+        .btn {
+            color: #483698;
+            background-color: #eae4e6;
+            border: 1px solid #483698;
+            padding: 3px 20px;
+            font-weight: bold;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <form name="google-sheet">
+        <div id="form_alerts"></div>
+        <div class="mb-3">
+            <label  class="form-label" >First Name:</label>
+            <input class="form-control rounded-0" type="text"  name="First Name">
+        </div>
+        <div class="mb-3">
+            <label   class="form-label">Family Name:</label>
+            <input class="form-control rounded-0" type="text"   name="Familly Name">
+        </div>
+        <div class="mb-3 d-flex justify-content-between flex-wrap w-75">
+            <label   class="form-label w-100">Birthday:</label>
+
+            <div class="input-container">
+                <select class="form-select rounded-0" aria-label="Default select example" name="Birthday-year">
+                    <option selected>Year</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="input-container">
+                <select class="form-select rounded-0" aria-label="Default select example" name="Birthday-month">
+                    <option selected>Month</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="input-container">
+                <select class="form-select rounded-0" aria-label="Default select example" name="Birthday-day">
+                    <option selected>Day</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label   class="form-label">Email:</label>
+            <input class="form-control rounded-0" type="email"   name="Email" id="email">
+        </div>
+        <div class="mb-3">
+            <label   class="form-label">Phone Number:</label>
+            <input class="form-control rounded-0" type="tel"   name="Phone Number" id="number">
+        </div>
+
+        <div class="mb-3 d-flex justify-content-between ">
+            <div style="width:72%;" class="input-container">
+                <label   class="form-label">Speciality:</label>
+                <select class="form-select rounded-0" aria-label="Default select example" name="speciality">
+                    <option selected></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div style="width: 25%;" class="input-container">
+                <label   class="form-label">Grade:</label>
+                <select class="form-select rounded-0" aria-label="Default select example" name="Grade">
+                    <option selected></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <label   class="form-label w-100">Do you have a personal computer ?</label>
+            <input data-rep="Yes" style="padding:1em;" class="yesOrNo form-control rounded-0" name="Do you have a personal computer ?"
+                type="radio"   value="Yes">
+            <input data-rep="No" style="padding:1em;" class="yesOrNo form-control rounded-0" name="Do you have a personal computer ?"
+                type="radio"   value="No">
+        </div>
+        <div class="input-group mb-3">
+            <label   class="form-label w-100">Have you experienced with design/web before?</label>
+            <input data-rep="Yes" style="padding:1em;" class="yesOrNo form-control rounded-0" name="Have you experienced with design/web before?" type="radio"
+                  value="Yes">
+            <input data-rep="No" style="padding:1em;" class="yesOrNo form-control rounded-0" name="Have you experienced with design/web before?" type="radio"
+                  value="No">
+        </div>
+        <div class="mb-3">
+            <label   class="form-label">Any softwares you know?</label>
+            <textarea class="form-control rounded-0" name="Any softwares you know?" type="text"  
+                style="height: 20px;"></textarea>
+        </div>
+        <div class="mb-3">
+            <label   class="form-label">if you are in any asso/club , mention it</label>
+            <input class="form-control rounded-0" type="text"   name="if you are in any asso/club , mention it">
+        </div>
+        <div class="mb-3 text-end">
+            <button class="btn  rounded-0" type="submit">Submit</button>
+        </div>
+    </form>
+
+    <!-- <table></table> -->
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        let data;
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby-jHqcW2-Ucix1WoQw7m5CcSIQOgi2kpEXggec-817Jne9pC4u8CKZyNPMU1p11Qh3/exec'
+        const form = document.forms['google-sheet']
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            let email = document.getElementById("email").value;
+            let number = document.getElementById("number").value;
+            let numberEmailArray = [];
+
+
+
+
+
+
+            fetch('https://script.google.com/macros/s/AKfycbwvoFQwID3zYbMbA5cbRmwIC7QcmEt2IvlhEluSQpzIyVGOHRF4dgBjc6TczhE9DpTY/exec')
+                .then(res => {
+                    
+                    return (res.json(),res.ok)
+                })
+                .then((data,status) => {
+                    if (status){
+                    data = Array.from(data.content)
+                   // console.log(data);
+                     data.forEach(el=>{ 
+                        numberEmailArray.push([el[5],el[6]]);
+                     })
+                     console.log(numberEmailArray)
+
+
+                     if(numberEmailArray.includes([email,number])){
+                         $("#form_alerts").html("<div class='alert alert-danger'>you have already registered.</div>")
+                     }else {
+                         fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                             .then(response => {
+                    console.log(status)
+                                 res.setHeader("Access-Control-Allow-Origin", "*");
+                                 $("#form_alerts").html("<div class='alert alert-success'>Contact message sent successfully.</div>")
+
+                             }).catch(error => $("#form_alerts").html("<div class='alert alert-danger'>Contact message not sent.</div>"))
+                     }
+                            
+                   }else {
+                    $("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>")
+                   } 
+
+
+                })
+                //.catch($("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>"));
+            
+        })
+    </script>
+</body>
+
+</html>
