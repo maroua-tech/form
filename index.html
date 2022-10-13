@@ -172,8 +172,8 @@ header('Access-Control-Allow-Origin: *');
     <script>
         
         let data;
-
-        const scriptURL = 'https://script.google.com/macros/s/AKfycby-jHqcW2-Ucix1WoQw7m5CcSIQOgi2kpEXggec-817Jne9pC4u8CKZyNPMU1p11Qh3/exec'
+        let status;
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzUGv7Gbe2W5Btm02eVJDDwbfo6sFLBZTGuR09acRX3twpL4BFQ7LakDX8zMjA_IXiy/exec'
         const form = document.forms['google-sheet']
 
         form.addEventListener('submit', e => {
@@ -186,32 +186,39 @@ header('Access-Control-Allow-Origin: *');
 
 
 
-
-            fetch('https://script.google.com/macros/s/AKfycbwvoFQwID3zYbMbA5cbRmwIC7QcmEt2IvlhEluSQpzIyVGOHRF4dgBjc6TczhE9DpTY/exec')
+                   
+            fetch('https://script.google.com/macros/s/AKfycbwLwFGwHOcc7bfcIWrSVw3VUXsVsfi8REUoEfVC0jm3qp3UwK3Ke9UqQ6mmog2ZH0gV/exec')
                 .then(res => {
-                    
-                    return (res.json(),res.ok)
+                    status = res.ok;
+                    return res.json()
                 })
-                .then((data,status) => {
+                .then((data) => {
+                    console.log(status)
                     if (status){
                     data = Array.from(data.content)
-                   // console.log(data);
+                    console.log(data);
                      data.forEach(el=>{ 
                         numberEmailArray.push([el[5],el[6]]);
                      })
                      console.log(numberEmailArray)
 
 
-                     if(numberEmailArray.includes([email,number])){
+                     if(!numberEmailArray.includes([email,number])){
                          $("#form_alerts").html("<div class='alert alert-danger'>you have already registered.</div>")
                      }else {
                          fetch(scriptURL, { method: 'POST', body: new FormData(form) })
                              .then(response => {
-                    console.log(status)
-                                 res.setHeader("Access-Control-Allow-Origin", "*");
-                                 $("#form_alerts").html("<div class='alert alert-success'>Contact message sent successfully.</div>")
+                    console.log(response.ok)
 
-                             }).catch(error => $("#form_alerts").html("<div class='alert alert-danger'>Contact message not sent.</div>"))
+                                if(response.ok){
+                                    //res.setHeader("Access-Control-Allow-Origin", "*");
+                                    $("#form_alerts").html("<div class='alert alert-success'>Contact message sent successfully.</div>")
+                               } else {
+                                    $("#form_alerts").html("<div class='alert alert-danger'>Contact message not sent.</div>")
+                                }
+                                 
+
+                             })
                      }
                             
                    }else {
@@ -220,7 +227,6 @@ header('Access-Control-Allow-Origin: *');
 
 
                 })
-                //.catch($("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>"));
             
         })
     </script>
