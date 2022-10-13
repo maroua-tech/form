@@ -175,12 +175,14 @@ header('Access-Control-Allow-Origin: *');
         let status;
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzUGv7Gbe2W5Btm02eVJDDwbfo6sFLBZTGuR09acRX3twpL4BFQ7LakDX8zMjA_IXiy/exec'
         const form = document.forms['google-sheet']
+        let numberArray = [];
+        let emailArray = [];
 
         form.addEventListener('submit', e => {
             e.preventDefault();
             let email = document.getElementById("email").value;
             let number = document.getElementById("number").value;
-            let numberEmailArray = [];
+            
 
 
 
@@ -198,13 +200,19 @@ header('Access-Control-Allow-Origin: *');
                         data = Array.from(data.content)
                         console.log(data);
                         data.forEach(el => {
-                            numberEmailArray.push([el[5], el[6]]);
+                            numberArray.push(el[6]);
+                            emailArray.push(el[5]);
                         })
-                        console.log(numberEmailArray)
+                        console.log(numberArray)
+                        console.log(emailArray)
                         console.log(email);
                         console.log(number);
-
-                        if (!numberEmailArray.includes([email, number])) {
+                        console.log(emailArray.includes(email))
+                        console.log(numberArray.includes(number))
+                      /*  function check (el) {
+                            return el == 
+                        }*/
+                        if (numberArray.includes(+number) || emailArray.includes(email)) {
                             $("#form_alerts").html("<div class='alert alert-danger'>you have already registered.</div>")
                             document.querySelectorAll('.form-control').forEach(el=>{
                                 el.value ='';
