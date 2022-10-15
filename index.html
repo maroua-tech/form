@@ -134,19 +134,22 @@ header('Access-Control-Allow-Origin: *');
 
         }
 
+        .cd-popup-container .flex-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 60%;
+        }
+
         .cd-popup-container img {
             width: 30%;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-
         }
 
 
         .cd-popup-container .cd-popup-close {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
             padding: 6px 20px;
             color: #fff;
             font-weight: 800;
@@ -173,7 +176,34 @@ header('Access-Control-Allow-Origin: *');
         @media only screen and (max-width: 962px) {
             .cd-popup-container {
                 width: 80%;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .cd-popup-container {
                 margin: 1em auto;
+                padding-top: 50px;
+            }
+
+            .cd-popup-container h1 {
+                width: 100%;
+            }
+
+            .cd-popup-container p {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+
+            .cd-popup-container .flex-container {
+                width: 80%;
+            }
+
+            .cd-popup-container img {
+                width: 50%;
+            }
+
+            .cd-popup-container .cd-popup-close {
+                font-size: 1.2em;
             }
         }
     </style>
@@ -183,7 +213,19 @@ header('Access-Control-Allow-Origin: *');
 <body>
     <form name="google-sheet">
         <div id="form_alerts">
-               
+            <!-- <div class="cd-popup is-visible " role="alert">
+                <div class="cd-popup-container ">
+                    <h1 class="fw-bolder fs-1" style="color: #483698">Thanks for your interest to be part of Muhandiss.
+                    </h1>
+                    <p> you should receive an email in the upcoming days to complete your registration</p>
+                    <div class="flex-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/fir-course-55977.appspot.com/o/Bar.C1-SVG.svg?alt=media&token=80f3e8c1-114a-44f1-9626-20881b92b8ef"
+                            alt="muhandiss">
+                        <a href="#0" class="cd-popup-close img-replace">Close</a>
+                    </div>
+
+                </div> cd-popup-container
+            </div> cd-popup -->
         </div>
         <div class="mb-3">
             <label class="form-label">First Name:</label>
@@ -225,19 +267,19 @@ header('Access-Control-Allow-Origin: *');
             <div style="width:72%;" class="input-container">
                 <label class="form-label">Speciality:</label>
                 <select class="form-select rounded-0" aria-label="Default select example" name="speciality" required>
-                    <option selected></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="1">IMSI</option>
+                    <option value="2">RT</option>
+                    <option value="3">ELN</option>
                 </select>
             </div>
             <div style="width: 25%;" class="input-container">
                 <label class="form-label">Grade:</label>
                 <select class="form-select rounded-0" aria-label="Default select example" name="Grade" required>
-                    <option selected></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="Bac +1">Bac +1</option>
+                    <option value="Bac +2">Bac +2</option>
+                    <option value="Bac +3">Bac +3</option>
+                    <option value="Bac +4">Bac +4</option>
+                    <option value="Bac +5">Bac +5</option>
                 </select>
             </div>
         </div>
@@ -257,15 +299,15 @@ header('Access-Control-Allow-Origin: *');
         </div>
         <div class="mb-3">
             <label class="form-label">Any softwares you know?</label>
-            <textarea class="form-control rounded-0" name="Any softwares you know?" type="text" style="height: 20px;"
-                required></textarea>
+            <textarea class="form-control rounded-0" name="Any softwares you know?" type="text"
+                style="height: 20px;"></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">if you are in any asso/club , mention it</label>
-            <input class="form-control rounded-0" type="text" name="if you are in any asso/club , mention it" required>
+            <input class="form-control rounded-0" type="text" name="if you are in any asso/club , mention it">
         </div>
         <div class="mb-3 text-end">
-            <button class="btn  rounded-0" type="submit" required>Submit</button>
+            <button class="btn  rounded-0" type="submit">Submit</button>
         </div>
     </form>
 
@@ -371,7 +413,11 @@ header('Access-Control-Allow-Origin: *');
         // form validation
         let data;
         let status;
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzUGv7Gbe2W5Btm02eVJDDwbfo6sFLBZTGuR09acRX3twpL4BFQ7LakDX8zMjA_IXiy/exec'
+        let itStatus;
+        let finalStatus;
+        let btn = document.querySelector(".btn");
+        const itscriptURL = 'https://script.google.com/macros/s/AKfycbzUGv7Gbe2W5Btm02eVJDDwbfo6sFLBZTGuR09acRX3twpL4BFQ7LakDX8zMjA_IXiy/exec'
+        const finalscriptURL = 'https://script.google.com/macros/s/AKfycbw-BRxbkyvvPAWgMGTGNcXnEySqiKGqjUeIm38jOwOdZrFx6ESAsLttREjv07EAN0ytNg/exec'
         const form = document.forms['google-sheet']
         let numberArray = [];
         let emailArray = [];
@@ -380,33 +426,29 @@ header('Access-Control-Allow-Origin: *');
             e.preventDefault();
             let email = document.getElementById("email").value;
             let number = document.getElementById("number").value;
+            btn.disabled = "true"
 
 
 
 
 
 
-
-            fetch('https://script.google.com/macros/s/AKfycbwLwFGwHOcc7bfcIWrSVw3VUXsVsfi8REUoEfVC0jm3qp3UwK3Ke9UqQ6mmog2ZH0gV/exec')
+            fetch('https://script.google.com/macros/s/AKfycbx_UXMVtRt3kIG9BwI5tCVgKHskhSsvceBoTqHNf_YKL2qmSjyRux-6_bxmZqRVrTUIng/exec')
                 .then(res => {
+                    console.log("mm")
                     status = res.ok;
                     return res.json()
                 })
                 .then((data) => {
-                    console.log(status)
                     if (status) {
                         data = Array.from(data.content)
-                        console.log(data);
+
                         data.forEach(el => {
-                            numberArray.push(el[6]);
-                            emailArray.push(el[5]);
+                            numberArray.push(el[data[0].indexOf('Phone Number')]);
+
+                            emailArray.push(el[data[0].indexOf('Email')]);
+
                         })
-                        console.log(numberArray)
-                        console.log(emailArray)
-                        console.log(email);
-                        console.log(number);
-                        console.log(emailArray.includes(email))
-                        console.log(numberArray.includes(number))
 
                         if (numberArray.includes(+number) || emailArray.includes(email)) {
                             $("#form_alerts").html("<div class='alert alert-danger'>you have already registered.</div>")
@@ -416,14 +458,19 @@ header('Access-Control-Allow-Origin: *');
                             document.querySelectorAll('.form-select').forEach(el => {
                                 el.value = '';
                             })
+                            btn.disabled = false;
                         } else {
-                            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                                .then(response => {
-                                    console.log(response.ok)
+                            fetch(itscriptURL, { method: 'POST', body: new FormData(form) })
+                                .then(rep => {
+                                    console.log("response.ok:", rep.ok)
 
-                                    if (response.ok) {
-                                        //   $("#form_alerts").html("<div class='alert alert-success'>You Are registered</div>")
-                                        $("#form_alerts").html(`<div class="cd-popup is-visible " role="alert">
+                                    if (rep.ok) {
+                                        fetch(finalscriptURL, { method: 'POST', body: new FormData(form) })
+                                            .then(res => {
+                                                console.log("response.ok final:", res.ok)
+
+                                                if (res.ok) {
+                                                    $("#form_alerts").html(`<div class="cd-popup is-visible " role="alert">
                 <div class="cd-popup-container ">
                     <h1 class="fw-bolder fs-1" style="color: #483698">Thanks for your interest to be part of Muhandiss.
                     </h1>
@@ -433,41 +480,50 @@ header('Access-Control-Allow-Origin: *');
                     <a href="#0" class="cd-popup-close img-replace">Close</a>
                 </div> <!-- cd-popup-container -->
             </div> <!-- cd-popup -->`)
-
-                                        // $('.cd-popup').addClass('is-visible');
-
-
-                                        //close popup
-                                        $('.cd-popup').on('click', function (event) {
-                                            if ($(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup')) {
-                                                event.preventDefault();
-                                                $(this).removeClass('is-visible');
-                                            }
-                                        });
+                                                    // $('.cd-popup').addClass('is-visible');
 
 
-
-
-                                        document.querySelectorAll('.form-control').forEach(el => {
-                                            el.value = '';
-                                        })
-                                        document.querySelectorAll('.form-select').forEach(el => {
-                                            el.value = '';
-                                        })
+                                                    //close popup
+                                                    $('.cd-popup').on('click', function (event) {
+                                                        if ($(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup')) {
+                                                            event.preventDefault();
+                                                            $(this).removeClass('is-visible');
+                                                        }
+                                                    });
+                                                    document.querySelectorAll('.form-control').forEach(el => {
+                                                        el.value = '';
+                                                    })
+                                                    document.querySelectorAll('.form-select').forEach(el => {
+                                                        el.value = '';
+                                                    })
+                                                    btn.disabled = false;
+                                                } else {
+                                                    console.log('2')
+                                                    $("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>");
+                                                    btn.disabled = false;
+                                                }
+                                            })
                                     } else {
-                                        $("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>")
+                                        console.log('3')
+                                        $("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>");
+                                        btn.disabled = false;
                                     }
-
-
                                 })
+
                         }
 
                     } else {
-                        $("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>")
+                        btn.disabled = false;
+                        console.log('1')
+                        $("#form_alerts").html("<div class='alert alert-danger'>Connection failed.</div>");
+
                     }
 
 
                 })
+
+
+
 
         })
     </script>
